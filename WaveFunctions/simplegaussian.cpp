@@ -22,11 +22,14 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
      * (only) variational parameter.
      */
 	double r2 = 0;
+	for( int particle = 0; particle < m_system->getNumberOfParticles(); particle++ )
+	{
 	for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
 	{
-		r2 += std::pow(particles[0]->getPosition()[dim], 2);
+		r2 += std::pow(particles[particle]->getPosition()[dim], 2);
 	}
-	return -m_parameters[0]*r2;
+	}
+	return std::exp(-m_parameters[0]*r2);
 }
 
 double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> particles) {

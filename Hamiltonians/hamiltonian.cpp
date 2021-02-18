@@ -34,10 +34,10 @@ double Hamiltonian::numeric()
 				dimension++)
 		{
 			particles[particle]->adjustPosition(h, dimension);
-			wfnext = std::exp(m_system->getWaveFunction()->evaluate(particles));
+			wfnext = m_system->getWaveFunction()->evaluate(particles);
 			particles[particle]->adjustPosition(-2*h, dimension);
 
-			std::exp(wfprev = m_system->getWaveFunction()->evaluate(particles));
+			wfprev = m_system->getWaveFunction()->evaluate(particles);
 			particles[particle]->adjustPosition(h, dimension);
 
 			deriv -= wfnext + wfprev - 2*wfcur;

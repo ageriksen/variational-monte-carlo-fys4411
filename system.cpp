@@ -36,7 +36,7 @@ bool System::metropolisStep(int particle) {
 
 	double wfnew = m_waveFunction->evaluate(m_particles);
 
-	if( m_random->nextDouble() <= std::exp(2*(wfnew - wfold)) )
+	if( m_random->nextDouble() <= 2*(wfnew - wfold) )
 	{
 		return true;
 	}
