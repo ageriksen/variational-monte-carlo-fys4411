@@ -28,13 +28,12 @@ double HarmonicOscillator::computeLocalEnergy(std::vector<Particle*> particles) 
      */
 
 	double r2 = 0;
-	//TODO apply loop over particles!!
 	for( int particle = 0; particle < m_system->getNumberOfParticles(); particle++ )
 	{
-	for( int dim=0; dim < m_system->getNumberOfDimensions(); dim++ )
-	{
-		r2 = std::pow(particles[particle]->getPosition()[dim], 2);
-	}
+		for( int dim=0; dim < m_system->getNumberOfDimensions(); dim++ )
+		{
+			r2 = std::pow(particles[particle]->getPosition()[dim], 2);
+		}
 	}
 
 	double potentialEnergy	= 0.5*m_omega*m_omega*r2;

@@ -24,10 +24,10 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
 	double r2 = 0;
 	for( int particle = 0; particle < m_system->getNumberOfParticles(); particle++ )
 	{
-	for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
-	{
-		r2 += std::pow(particles[particle]->getPosition()[dim], 2);
-	}
+		for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+		{
+			r2 += std::pow(particles[particle]->getPosition()[dim], 2);
+		}
 	}
 	return std::exp(-m_parameters[0]*r2);
 }
@@ -43,11 +43,18 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
      */
 
 	double r2 = 0;
-	for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+	for( int particle=0; particle < m_system->getNumberOfParticles(); particle++)
 	{
-		r2 += std::pow(particles[0]->getPosition()[dim], 2);
+		for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+		{
+			r2 += std::pow(particles[0]->getPosition()[dim], 2);
+		}
 	}
-	return -2*m_parameters[0] + 4*pow(m_parameters[0], 2)*r2;
+	return 
+		-2*m_parameters[0]
+			*m_system->getNumberOfDimensions()
+			*m_system->getNumberOfDimensions() 
+		+ 4*pow(m_parameters[0], 2)*r2;
 }
 
 
