@@ -7,6 +7,7 @@
 #include "WaveFunctions/simplegaussian.h"
 #include "Hamiltonians/hamiltonian.h"
 #include "Hamiltonians/harmonicoscillator.h"
+#include "Hamiltonians/repulsiveinteraction.h"
 #include "InitialStates/initialstate.h"
 #include "InitialStates/randomuniform.h"
 #include "Math/random.h"
@@ -51,6 +52,9 @@ int main() {
     int nIterations             = 1000;
     double eta                  = .001;
     double alphaChange          = 10;
+
+    double gamma = 2.82843;
+    double a = 0.0043;
 
     //creares a folder for the results
     #if defined(_WIN32)
@@ -102,7 +106,8 @@ int main() {
                         for (int iter = 0; iter < nIterations; iter++)
                         {    
                             System* system = new System(seed);
-                            system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
+                            system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, a, true));
+                            // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
                             system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
                             system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                             system->setEquilibrationFraction    (0); 
