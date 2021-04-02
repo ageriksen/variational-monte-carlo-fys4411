@@ -34,7 +34,7 @@ int main() {
 
     int numberOfDimensions[]    = {1, 2, 3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {1,10,100}; 
+    int numberOfParticles[]     = {2, 3};  //{1,10,100}; 
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
@@ -42,7 +42,7 @@ int main() {
     double stepLength           = 2;              // Metropolis step length.
     double equilibration        = 0.1;              // Amount of the total steps used
                                                     // for equilibration.
-    int methods[]               = {0};
+    int methods[]               = {1};
     double dt[]                 = {0.001};
     // double dt[]                 = {0.001, 0.005, 0.01};
     //for steepest descent
@@ -90,7 +90,7 @@ int main() {
     //checks if want to use steepest descent to optimize alpha
     if (do_steepest_descent)
     {    
-        #pragma omp parallel for schedule(dynamic) default(shared) collapse(4)
+        // #pragma omp parallel for schedule(dynamic) default(shared) collapse(4)
         for (unsigned int nPar = 0; nPar < sizeof(numberOfParticles)/sizeof(numberOfParticles[0]); nPar++)
         {
             for (unsigned int nDim = 0; nDim < sizeof(numberOfDimensions)/sizeof(numberOfDimensions[0]); nDim++)
@@ -98,8 +98,7 @@ int main() {
                 for (unsigned int met = 0; met < sizeof(methods)/sizeof(methods[0]); met++)
                 {
                     for (unsigned int ddt = 0; ddt < sizeof(dt)/sizeof(dt[0]); ddt++)
-                    {
-                            
+                    {       
                         //steepest descent keeps goining until the desired number of iterations or until
                         //the change in alpha is acceptably small
                         int iters = nIterations;
@@ -127,6 +126,8 @@ int main() {
                             alphaChange = eta*2*(currDerivativePsiE - currEnergy*currDeltaPsi);
                             alpha_guess -= alphaChange;
 
+                            cout << "alpha: " << alpha_guess << endl;
+
                             if (abs(alphaChange) < 1e-6 && abs(alpha_guess) < 2)
                             {
                                 // cout << "iter: " << iter << endl;
@@ -141,7 +142,8 @@ int main() {
 
 
                         System* system = new System(seed);
-                        system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
+                        // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
+                        system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, a, true));
                         system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
                         system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                         system->setEquilibrationFraction    (equilibration);
