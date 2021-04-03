@@ -4,7 +4,7 @@
 
 class RepulsiveInteraction : public Hamiltonian {
 public:
-    RepulsiveInteraction(class System* system, double omega, double gamma, double a, bool mode);
+    RepulsiveInteraction(class System* system, double omega, double gamma, bool mode);
     double computeLocalEnergy(std::vector<class Particle*> particles);
 
 private:

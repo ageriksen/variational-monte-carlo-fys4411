@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cmath>
 #include <chrono>
+#include <iostream>
 #include "sampler.h"
 #include "particle.h"
 #include "WaveFunctions/wavefunction.h"
@@ -77,10 +78,12 @@ bool System::metropolisStep(int particle) {
 		step[dim] = m_stepLength*(m_random->nextDouble() - .5);
 		m_particles[particle]->adjustPosition(step[dim], dim);
 	}
-	double wfnew = m_waveFunction->evaluate(m_particles);
 
+	bool Vint = findVint(particle);
+
+	double wfnew = m_waveFunction->evaluate(m_particles);
 	double ratio = wfnew*wfnew/(wfold*wfold);
-	if( m_random->nextDouble() <= ratio )//std::exp(2*(wfnew - wfold)) )
+	if( m_random->nextDouble() <= ratio && Vint )//std::exp(2*(wfnew - wfold)) )
 	{
 		return true;
 	}
@@ -156,9 +159,11 @@ bool System::importanceSamplingStep(int particle) {
 	double wfnew = m_waveFunction->evaluate(m_particles);
 	std::vector<double> qForceNew = quantumForce(particle);
 
+	bool Vint = findVint(particle);
+
 	double ratio = wfnew*wfnew/(wfold*wfold);
 	ratio = ratio*GreensFunctionRatio(m_particles[particle]->getPosition(), posOld, dt, qForceOld, qForceNew);
-	if( m_random->nextDouble() <= ratio )//std::exp(2*(wfnew - wfold)) )
+	if( m_random->nextDouble() <= ratio && Vint)//std::exp(2*(wfnew - wfold)) )
 	{
 		return true;
 	}
@@ -212,6 +217,32 @@ void System::runImportanceSamplingSteps(int numberOfMetropolisSteps, bool saveDa
 	}
 }
 
+bool System::findVint(int particle) {
+    bool V_int = true;
+    double r_ij2 = 0;
+
+    //first we check if V_int is 0 or inf
+    for (int i = particle; i < getNumberOfParticles(); i++)
+    {
+        for (int j = i+1; j < getNumberOfParticles(); j++)
+        {
+            r_ij2 = 0;
+            for( int dim=0; dim < getNumberOfDimensions(); dim++ )
+            {            
+                r_ij2 += std::pow(m_particles[i]->getPosition()[dim] - m_particles[j]->getPosition()[dim], 2);
+            }
+            if (r_ij2 <= m_a)
+            {
+                V_int = false; //some large number
+				// std::cout << "inf" << std::endl;
+                break;
+            }
+        }
+    }
+	return V_int;
+}
+
+
 void System::setNumberOfParticles(int numberOfParticles) {
     m_numberOfParticles = numberOfParticles;
 }
@@ -242,4 +273,7 @@ void System::setInitialState(InitialState* initialState) {
     m_initialState = initialState;
 }
 
+void System::seta(double a) {
+    m_a = a;
+}
 

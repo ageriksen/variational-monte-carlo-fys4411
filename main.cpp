@@ -32,9 +32,9 @@ int main() {
     int seed = 2020;
 
 
-    int numberOfDimensions[]    = {1, 2, 3};
+    int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 3};  //{1,10,100}; 
+    int numberOfParticles[]     = {2, 3, 10, 50, 100};  //{1,10,100}; 
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
@@ -90,7 +90,7 @@ int main() {
     //checks if want to use steepest descent to optimize alpha
     if (do_steepest_descent)
     {    
-        // #pragma omp parallel for schedule(dynamic) default(shared) collapse(4)
+        #pragma omp parallel for schedule(dynamic) default(shared) collapse(4)
         for (unsigned int nPar = 0; nPar < sizeof(numberOfParticles)/sizeof(numberOfParticles[0]); nPar++)
         {
             for (unsigned int nDim = 0; nDim < sizeof(numberOfDimensions)/sizeof(numberOfDimensions[0]); nDim++)
@@ -105,12 +105,13 @@ int main() {
                         for (int iter = 0; iter < nIterations; iter++)
                         {    
                             System* system = new System(seed);
-                            system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, a, true));
+                            system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, true));
                             // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
                             system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
                             system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                             system->setEquilibrationFraction    (0); 
                             system->setStepLength               (stepLength);
+                            system->seta                        (a);
                             
                             if (methods[met] == 0)
                             {
@@ -126,7 +127,7 @@ int main() {
                             alphaChange = eta*2*(currDerivativePsiE - currEnergy*currDeltaPsi);
                             alpha_guess -= alphaChange;
 
-                            cout << "alpha: " << alpha_guess << endl;
+                            // cout << "alpha: " << alpha_guess << endl;
 
                             if (abs(alphaChange) < 1e-6 && abs(alpha_guess) < 2)
                             {
@@ -143,7 +144,7 @@ int main() {
 
                         System* system = new System(seed);
                         // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
-                        system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, a, true));
+                        system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, true));
                         system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
                         system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                         system->setEquilibrationFraction    (equilibration);
