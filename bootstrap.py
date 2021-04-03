@@ -54,7 +54,7 @@ def csvError(infile, delim, plot):
         X = np.array(row, dtype=float)
         #t = tsboot(X, stat, int(len(X)*.5), int(len(X)*.2))
         t = tsboot(X, stat, 2**12, 2**10)
-        error.append(np.std(t))
+        error.append(np.std(t), np.mean(t) - stat(X))
         #TODO justify numbers used for number of and size of 
         #       bootstraps
         """

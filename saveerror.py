@@ -48,6 +48,12 @@ be attempted found?
 
 #first off, save to file filename
 def SaveError(filename, data):
+    #import csv
+    #outfile = open(filename, 'w', newline='')
+    #csv_writer = csv.writer(outfile, delimiter=";")
+    #for dat in data:
+    #    csv_writer.writerow(dat)
+
     outfile = open(filename, 'w')
     for dat in data:
         outfile.write("%g\n"%dat)
