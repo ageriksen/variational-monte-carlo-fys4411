@@ -62,6 +62,19 @@ def block(X):
 
     return s[k]/2**(d-k)
 
+def csvError(infile, delim):
+    csv_reader = csv.reader(infile, delimiter=delim)
+    error = []
+    for row in csv_reader:
+        print("*"*50)
+        row = list(filter(None, row))
+        X = array(row, dtype=float)
+        error.append(block(X))
+        print("standard error = %g" %error[-1]**.5)
+    return error
+        
+
+from saveerror import SaveError
 #X = loadtxt("../block/resources/data.txt")
 #print("standard error = %g" %block(X)**.5)
 """
@@ -72,23 +85,13 @@ runexample:
 #1c
 print("1c) ")
 infile = open(data_path("energies_1c.csv"), "r")
-csv_reader = csv.reader(infile, delimiter=";")
-i = 0
-for row in csv_reader:
-    print("*"*50)
-    row = list(filter(None, row))
-    X = array(row, dtype=float)
-    print("standard error = %g" %block(X)**.5)
+err = csvError(infile, ";")
 infile.close()
+SaveError("results/error_blocking_1c.txt", err)
 
 #1d
 print("1d) ")
 infile = open(data_path("energies_1d.csv"), "r")
-csv_reader = csv.reader(infile, delimiter=";")
-for row in csv_reader:
-    print("*"*50)
-    row = list(filter(None, row))
-    X = array(row, dtype=float)
-    print("standard error = %g" %block(X)**.5)
-    #break
+err = csvError(infile, ";")
 infile.close()
+SaveError("results/error_blocking_1d.txt", err)
