@@ -146,7 +146,7 @@ int main() {
                         time_point<system_clock> sd_time_end = high_resolution_clock::now();
                         double sd_elapsed_time = duration_cast<nanoseconds> (sd_time_end - sd_time_start).count() / 1e9;
                         string printStuff = "";
-                        printStuff.append("Found best alpha: " + to_string(alpha_guess) + to_string(alphaChange)  + " after " + to_string(iters));
+                        printStuff.append("Found best alpha: " + to_string(alpha_guess) + " " + to_string(alphaChange)  + " after " + to_string(iters));
                         printStuff.append(" iterations on thread " + to_string(omp_get_thread_num()) + ".\n\n");
 
                         System* system = new System(seed);
