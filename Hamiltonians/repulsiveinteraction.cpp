@@ -16,7 +16,9 @@ RepulsiveInteraction::RepulsiveInteraction(System* system, double omega, double 
     m_omega  = omega;
     m_gamma[2] = gamma*gamma; //
     // m_a = a;
-    system->getWaveFunction()->updateParameters(gamma);
+    // cout << "here 1" << endl;
+    // m_system->getWaveFunction()->updateParameters(gamma);
+    // cout << "here 2" << endl;
     // system->getWaveFunction()->m_numberOfParameters += 1;
     // system->getWaveFunction()->m_parameters.push_back(gamma);
 }

@@ -10,7 +10,6 @@ public:
 private:
     double m_omega = 0;
     double m_gamma[3] = {1,1,1};
-    double m_a = 0;
 	bool m_mode = true;
 };
 

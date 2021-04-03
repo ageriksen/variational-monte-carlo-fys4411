@@ -35,7 +35,7 @@ int main() {
 
     int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 3, 5, 10};  //{1,10,100}; 
+    int numberOfParticles[]     = {2, 3, 4, 5};  //{1,10,100}; 
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
@@ -48,7 +48,7 @@ int main() {
     // double dt[]                 = {0.001, 0.005, 0.01};
     //for steepest descent
     bool do_steepest_descent    = true;
-    double alpha_guess          = 0.45;
+    double alpha_guess          = 0.75;
     int sd_steps                = (int) 1e3;
     int nIterations             = 1000;
     double eta                  = .01;
@@ -79,7 +79,7 @@ int main() {
     ofstream outfile;
     outfile.open ("results/results.csv", ios::out | ios::trunc);
     outfile << 
-    "n Particles;n Dimensions;n Metropolis Steps;Equilibration Fraction;Accepted Steps;Found Energy;Elapsed Time;n Parameters;Parameters (undefinedNumber)\n";
+    "n Particles;n Dimensions;n Metropolis Steps;Equilibration Fraction;Accepted Steps;Found Energy;Steepest Descent Time;Elapsed Time;n Parameters;Parameters (undefinedNumber)\n";
     outfile.close();
     outfile.open ("results/energies.csv", ios::out | ios::trunc);
     outfile.close();
@@ -103,6 +103,9 @@ int main() {
                     {       
                         //steepest descent keeps goining until the desired number of iterations or until
                         //the change in alpha is acceptably small
+
+                        time_point<system_clock> sd_time_start = high_resolution_clock::now();
+
                         int iters = nIterations;
                         for (int iter = 0; iter < nIterations; iter++)
                         {    
@@ -140,10 +143,11 @@ int main() {
                             }
                         }
 
+                        time_point<system_clock> sd_time_end = high_resolution_clock::now();
+                        double sd_elapsed_time = duration_cast<nanoseconds> (sd_time_end - sd_time_start).count() / 1e9;
                         string printStuff = "";
                         printStuff.append("Found best alpha: " + to_string(alpha_guess) + to_string(alphaChange)  + " after " + to_string(iters));
                         printStuff.append(" iterations on thread " + to_string(omp_get_thread_num()) + ".\n\n");
-
 
                         System* system = new System(seed);
                         // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
@@ -153,7 +157,9 @@ int main() {
                         system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                         system->setEquilibrationFraction    (equilibration);
                         system->setStepLength               (stepLength);
+                        system->getWaveFunction()->updateParameters(gamma);
                         system->seta                        (a);
+                        system->setSDTime                   (sd_elapsed_time);
 
                         if (methods[met] == 0)
                         {

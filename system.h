@@ -20,6 +20,7 @@ public:
     void setWaveFunction                    (class WaveFunction* waveFunction);
     void setInitialState                    (class InitialState* initialState);
     void seta                               (double a);
+    void setSDTime                          (double sdTime) {m_sd_time = sdTime;}
     bool findVint                           (int particle);
     double GreensFunctionRatio              (std::vector<double> y, std::vector<double> x, 
                                              double dt, std::vector<double> qForceOld, 
@@ -36,6 +37,7 @@ public:
     double getEquilibrationFraction()   { return m_equilibrationFraction; }
     // std::chrono::time_point<std::chrono::system_clock> getTimeStart()   { return m_time_start;}
     double getElapsedTime()                  { return m_elapsed_time;}
+    double getSDTime()                  { return m_sd_time;}
 
 private:
     int                             m_numberOfParticles = 0;
@@ -52,6 +54,7 @@ private:
     std::vector<double>             m_sdRes = std::vector<double> {};
     class Random*                   m_random = nullptr;
     std::chrono::time_point<std::chrono::system_clock> m_time_start;
-    double m_elapsed_time;
+    double                          m_elapsed_time = 0;
+    double                          m_sd_time = 0;
 };
 

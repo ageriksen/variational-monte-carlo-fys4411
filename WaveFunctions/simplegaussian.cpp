@@ -1,6 +1,7 @@
 #include "simplegaussian.h"
 #include <cmath>
 #include <cassert>
+#include <iostream>
 #include "wavefunction.h"
 #include "../system.h"
 #include "../particle.h"
@@ -10,10 +11,11 @@ SimpleGaussian::SimpleGaussian(System* system, double alpha, double dt) :
     assert(alpha >= 0);
     assert(dt >= 0);
     m_numberOfParameters = 2;
-    m_parameters.reserve(2);
+    m_parameters.reserve(6);
     m_parameters.push_back(alpha);
     m_parameters.push_back(dt);
 }
+
 
 double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
     /* You need to implement a Gaussian wave function here. The positions of

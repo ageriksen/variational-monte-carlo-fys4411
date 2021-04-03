@@ -1,6 +1,7 @@
 #include "ellipticalgaussian.h"
 #include <cmath>
 #include <cassert>
+#include <iostream>
 #include "wavefunction.h"
 #include "../system.h"
 #include "../particle.h"
@@ -10,8 +11,8 @@ EllipticalGaussian::EllipticalGaussian(System* system, double alpha, double beta
     assert(alpha >= 0);
     assert(beta >= 0);
     assert(dt >= 0);
-    m_numberOfParameters += 3;
-    m_parameters.reserve(3);
+    m_numberOfParameters = 3;
+    m_parameters.reserve(6);
     m_parameters.push_back(alpha);
     m_parameters.push_back(dt);
     m_parameters.push_back(beta);
