@@ -5,6 +5,7 @@
 #include "particle.h"
 #include "WaveFunctions/wavefunction.h"
 #include "WaveFunctions/simplegaussian.h"
+#include "WaveFunctions/ellipticalgaussian.h"
 #include "Hamiltonians/hamiltonian.h"
 #include "Hamiltonians/harmonicoscillator.h"
 #include "Hamiltonians/repulsiveinteraction.h"
@@ -34,7 +35,7 @@ int main() {
 
     int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 3, 10, 50, 100};  //{1,10,100}; 
+    int numberOfParticles[]     = {2, 3, 5, 10};  //{1,10,100}; 
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
@@ -50,10 +51,11 @@ int main() {
     double alpha_guess          = 0.45;
     int sd_steps                = (int) 1e3;
     int nIterations             = 1000;
-    double eta                  = .001;
+    double eta                  = .01;
     double alphaChange          = 10;
 
     double gamma = 2.82843;
+    double beta = 2.82843;
     double a = 0.0043;
 
     //creares a folder for the results
@@ -107,7 +109,8 @@ int main() {
                             System* system = new System(seed);
                             system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, true));
                             // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
-                            system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
+                            // system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
+                            system->setWaveFunction             (new EllipticalGaussian(system, alpha_guess, beta, dt[ddt]));
                             system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                             system->setEquilibrationFraction    (0); 
                             system->setStepLength               (stepLength);
@@ -138,17 +141,19 @@ int main() {
                         }
 
                         string printStuff = "";
-                        printStuff.append("Found best alpha: " + to_string(alpha_guess) + " after " + to_string(iters));
+                        printStuff.append("Found best alpha: " + to_string(alpha_guess) + to_string(alphaChange)  + " after " + to_string(iters));
                         printStuff.append(" iterations on thread " + to_string(omp_get_thread_num()) + ".\n\n");
 
 
                         System* system = new System(seed);
                         // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
                         system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, true));
-                        system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
+                        // system->setWaveFunction             (new SimpleGaussian(system, alpha_guess, dt[ddt]));
+                        system->setWaveFunction             (new EllipticalGaussian(system, alpha_guess, beta, dt[ddt]));
                         system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                         system->setEquilibrationFraction    (equilibration);
                         system->setStepLength               (stepLength);
+                        system->seta                        (a);
 
                         if (methods[met] == 0)
                         {

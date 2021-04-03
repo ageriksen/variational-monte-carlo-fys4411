@@ -9,8 +9,9 @@ public:
     std::vector<double> getParameters() { return m_parameters; }
     virtual double evaluate(std::vector<class Particle*> particles) = 0;
     virtual double computeDerivative(std::vector<class Particle*> particles) = 0;
-    virtual double computeDoubleDerivative(double r2) = 0;
-    // virtual double computeDoubleDerivative(std::vector<class Particle*> particles, int particle) = 0;
+    // virtual double computeDoubleDerivative(double r2) = 0;
+    virtual double computeDoubleDerivative(std::vector<class Particle*> particles) = 0;
+    void updateParameters(double update);
 
 protected:
     int     m_numberOfParameters = 0;

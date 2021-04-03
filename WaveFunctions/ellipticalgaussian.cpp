@@ -1,21 +1,24 @@
-#include "simplegaussian.h"
+#include "ellipticalgaussian.h"
 #include <cmath>
 #include <cassert>
 #include "wavefunction.h"
 #include "../system.h"
 #include "../particle.h"
 
-SimpleGaussian::SimpleGaussian(System* system, double alpha, double dt) :
+EllipticalGaussian::EllipticalGaussian(System* system, double alpha, double beta, double dt) :
         WaveFunction(system) {
     assert(alpha >= 0);
+    assert(beta >= 0);
     assert(dt >= 0);
-    m_numberOfParameters = 2;
-    m_parameters.reserve(2);
+    m_numberOfParameters += 3;
+    m_parameters.reserve(3);
     m_parameters.push_back(alpha);
     m_parameters.push_back(dt);
+    m_parameters.push_back(beta);
+    // double m_beta[] = {1,1,beta};
 }
 
-double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
+double EllipticalGaussian::evaluate(std::vector<class Particle*> particles) {
     /* You need to implement a Gaussian wave function here. The positions of
      * the particles are accessible through the particle[i].getPosition()
      * function.
@@ -24,18 +27,27 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
      * (only) variational parameter.
      */
 	double r2 = 0;
-	for( int particle = 0; particle < m_system->getNumberOfParticles(); particle++ )
-	{
-		for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
-		{
-			r2 += std::pow(particles[particle]->getPosition()[dim], 2);
-		}
-	}
+	for (int particle = 0; particle < m_system->getNumberOfParticles(); particle++)
+    {
+        for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+        {
+            if ( dim == 2)
+            {
+                r2 += m_parameters[2] * std::pow(particles[particle]->getPosition()[dim], 2);
+            }
+            else
+            {
+                r2 += std::pow(particles[particle]->getPosition()[dim], 2);
+            }
+            
+        }
+    }
+
 	//return -m_parameters[0]*r2;
 	return std::exp(-m_parameters[0]*r2);
 }
 
-double SimpleGaussian::computeDerivative(std::vector<class Particle*> particles) {
+double EllipticalGaussian::computeDerivative(std::vector<class Particle*> particles) {
     /* Computes the derivative of wave function ansatz as function of variational parameters.
      * (I think this is correct)
      */
@@ -44,14 +56,22 @@ double SimpleGaussian::computeDerivative(std::vector<class Particle*> particles)
     {
         for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
         {
-            r2 += std::pow(particles[particle]->getPosition()[dim], 2);
+            if ( dim == 2)
+            {
+                r2 += m_parameters[2] * std::pow(particles[particle]->getPosition()[dim], 2);
+            }
+            else
+            {
+                r2 += std::pow(particles[particle]->getPosition()[dim], 2);
+            }
+            
         }
     }
+
 	return -.5*r2;
 }
 
-
-double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> particles) {
+double EllipticalGaussian::computeDoubleDerivative(std::vector<class Particle*> particles) {
     /* All wave functions need to implement this function, so you need to
      * find the double derivative analytically. Note that by double derivative,
      * we actually mean the sum of the Laplacians with respect to the
@@ -66,7 +86,15 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
     {
         for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
         {
-            r2 += std::pow(particles[particle]->getPosition()[dim], 2);
+            if ( dim == 2)
+            {
+                r2 += m_parameters[2] * std::pow(particles[particle]->getPosition()[dim], 2);
+            }
+            else
+            {
+                r2 += std::pow(particles[particle]->getPosition()[dim], 2);
+            }
+            
         }
     }
 

@@ -16,6 +16,9 @@ RepulsiveInteraction::RepulsiveInteraction(System* system, double omega, double 
     m_omega  = omega;
     m_gamma[2] = gamma*gamma; //
     // m_a = a;
+    system->getWaveFunction()->updateParameters(gamma);
+    // system->getWaveFunction()->m_numberOfParameters += 1;
+    // system->getWaveFunction()->m_parameters.push_back(gamma);
 }
 
 double RepulsiveInteraction::computeLocalEnergy(std::vector<Particle*> particles) {
@@ -44,7 +47,7 @@ double RepulsiveInteraction::computeLocalEnergy(std::vector<Particle*> particles
 
     if( m_mode ){
         kineticEnergy	=
-            -0.5*m_system->getWaveFunction()->computeDoubleDerivative(r2);
+            -0.5*m_system->getWaveFunction()->computeDoubleDerivative(particles);
     } else
     {// mode here means numeric or analytic. TODO clarify variable
         kineticEnergy	= numeric();// -.5*numeric();

@@ -275,5 +275,6 @@ void System::setInitialState(InitialState* initialState) {
 
 void System::seta(double a) {
     m_a = a;
+	getWaveFunction()->updateParameters(a);
 }
 
