@@ -9,7 +9,7 @@ from scipy.stats import norm
 import matplotlib.pyplot as plt
 from numpy.random import randint
 
-from saveerror import SaveError
+#from saveerror import SaveError
 
 #where to save data
 #DATA_ID = "results_1c"
@@ -17,6 +17,20 @@ DATA_ID = "results"
 
 def data_path(data_id): 
     return os.path.join(DATA_ID, data_id)
+
+def SaveError(filename, data):
+    """
+    bootstrap needs to store more per row, so simplest to 
+    implement save function locally.
+    """
+    outfile = open(filename, 'w', newline='')
+    csv_writer = csv.writer(outfile, delimiter=";")
+    for dat in data:
+        csv_writer.writerow(dat)
+
+    #outfile = open(filename, 'w')
+    #for dat in data:
+    #    outfile.write("%g\n"%dat)
 
 def tsboot(data, statistic, R, l):
     t = np.zeros(R)
@@ -54,7 +68,7 @@ def csvError(infile, delim, plot):
         X = np.array(row, dtype=float)
         #t = tsboot(X, stat, int(len(X)*.5), int(len(X)*.2))
         t = tsboot(X, stat, 2**12, 2**10)
-        error.append(np.std(t), np.mean(t) - stat(X))
+        error.append([np.std(t), np.mean(t) - stat(X)])
         #TODO justify numbers used for number of and size of 
         #       bootstraps
         """
