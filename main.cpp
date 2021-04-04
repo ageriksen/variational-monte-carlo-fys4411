@@ -48,7 +48,7 @@ int main() {
     // double dt[]                 = {0.001, 0.005, 0.01};
     //for steepest descent
     bool do_steepest_descent    = true;
-    double alpha_guess          = 0.75;
+    double alpha_guess          = 0.7;
     int sd_steps                = (int) 1e3;
     int nIterations             = 1000;
     double eta                  = .01;
