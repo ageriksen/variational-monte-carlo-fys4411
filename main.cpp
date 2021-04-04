@@ -135,7 +135,7 @@ int main() {
 
                             // cout << "alpha: " << alpha_guess << endl;
 
-                            if (abs(alphaChange) < 1e-6 && abs(alpha_guess) < 2)
+                            if (abs(alphaChange) < 1e-6 && abs(alpha_guess) < 10)
                             {
                                 // cout << "iter: " << iter << endl;
                                 iters = iter+1;
