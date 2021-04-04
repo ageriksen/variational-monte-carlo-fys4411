@@ -16,7 +16,7 @@ EllipticalGaussian::EllipticalGaussian(System* system, double alpha, double beta
     m_parameters.push_back(alpha);
     m_parameters.push_back(dt);
     m_parameters.push_back(beta);
-    // double m_beta[] = {1,1,beta};
+    m_beta[2] = beta;
 }
 
 double EllipticalGaussian::evaluate(std::vector<class Particle*> particles) {
@@ -32,15 +32,7 @@ double EllipticalGaussian::evaluate(std::vector<class Particle*> particles) {
     {
         for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
         {
-            if ( dim == 2)
-            {
-                r2 += m_parameters[2] * std::pow(particles[particle]->getPosition()[dim], 2);
-            }
-            else
-            {
-                r2 += std::pow(particles[particle]->getPosition()[dim], 2);
-            }
-            
+            r2 += m_beta[dim] * std::pow(particles[particle]->getPosition()[dim], 2);
         }
     }
 
@@ -57,15 +49,7 @@ double EllipticalGaussian::computeDerivative(std::vector<class Particle*> partic
     {
         for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
         {
-            if ( dim == 2)
-            {
-                r2 += m_parameters[2] * std::pow(particles[particle]->getPosition()[dim], 2);
-            }
-            else
-            {
-                r2 += std::pow(particles[particle]->getPosition()[dim], 2);
-            }
-            
+            r2 += m_beta[dim] * std::pow(particles[particle]->getPosition()[dim], 2);
         }
     }
 
@@ -87,15 +71,7 @@ double EllipticalGaussian::computeDoubleDerivative(std::vector<class Particle*> 
     {
         for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
         {
-            if ( dim == 2)
-            {
-                r2 += m_parameters[2] * std::pow(particles[particle]->getPosition()[dim], 2);
-            }
-            else
-            {
-                r2 += std::pow(particles[particle]->getPosition()[dim], 2);
-            }
-            
+            r2 += m_beta[dim] * std::pow(particles[particle]->getPosition()[dim], 2);
         }
     }
 
