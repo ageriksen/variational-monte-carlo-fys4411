@@ -35,7 +35,7 @@ int main() {
 
     int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 3, 4, 5};  //{1,10,100}; 
+    int numberOfParticles[]     = {2, 10, 50, 100};  //{1,10,100}; 
     int numberOfSteps           = (int) 1e5;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
@@ -49,9 +49,9 @@ int main() {
     //for steepest descent
     bool do_steepest_descent    = true;
     double alpha_guess          = 0.7;
-    int sd_steps                = (int) 1e3;
+    int sd_steps                = (int) 1e4;
     int nIterations             = 1000;
-    double eta                  = .01;
+    double eta                  = .001;
     double alphaChange          = 10;
 
     double gamma = 2.82843;
