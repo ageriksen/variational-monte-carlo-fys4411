@@ -19,6 +19,9 @@ public:
     void setHamiltonian                     (class Hamiltonian* hamiltonian);
     void setWaveFunction                    (class WaveFunction* waveFunction);
     void setInitialState                    (class InitialState* initialState);
+    void seta                               (double a);
+    void setSDTime                          (double sdTime) {m_sd_time = sdTime;}
+    bool findVint                           (int particle);
     double GreensFunctionRatio              (std::vector<double> y, std::vector<double> x, 
                                              double dt, std::vector<double> qForceOld, 
                                              std::vector<double> qForceNew);
@@ -33,7 +36,8 @@ public:
     int getNumberOfMetropolisSteps()    { return m_numberOfMetropolisSteps; }
     double getEquilibrationFraction()   { return m_equilibrationFraction; }
     // std::chrono::time_point<std::chrono::system_clock> getTimeStart()   { return m_time_start;}
-    double getElapsedTime()                      { return m_elapsed_time;}
+    double getElapsedTime()                  { return m_elapsed_time;}
+    double getSDTime()                  { return m_sd_time;}
 
 private:
     int                             m_numberOfParticles = 0;
@@ -41,6 +45,7 @@ private:
     int                             m_numberOfMetropolisSteps = 0;
     double                          m_equilibrationFraction = 0.0;
     double                          m_stepLength = 0.1;
+    double                          m_a = 0;
     class WaveFunction*             m_waveFunction = nullptr;
     class Hamiltonian*              m_hamiltonian = nullptr;
     class InitialState*             m_initialState = nullptr;
@@ -49,6 +54,7 @@ private:
     std::vector<double>             m_sdRes = std::vector<double> {};
     class Random*                   m_random = nullptr;
     std::chrono::time_point<std::chrono::system_clock> m_time_start;
-    double m_elapsed_time;
+    double                          m_elapsed_time = 0;
+    double                          m_sd_time = 0;
 };
 

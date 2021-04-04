@@ -75,6 +75,7 @@ void Sampler::getOutput() {
     double  ef = m_system->getEquilibrationFraction();
     vector<double> pa = m_system->getWaveFunction()->getParameters();
     double  ti = m_system->getElapsedTime();
+    double  ts = m_system->getSDTime();
     
     m_output.append("  -- System info -- \n");
     m_output.append(" Number of particles  : " + to_string(np) + "\n");
@@ -91,6 +92,7 @@ void Sampler::getOutput() {
 			" Accepted steps : " + to_string((double)m_accepted/(double)m_stepNumber)
 			+ "\n");
     m_output.append(" Found energy : " + to_string(m_energy) + "\n");
+    m_output.append(" Steepest descent time : " + to_string(ts) + " seconds\n");
     m_output.append(" Elapsed time : " + to_string(ti) + " seconds\n");
     m_output.append("\n");
     
@@ -132,6 +134,7 @@ void Sampler::printOutputToFile() {
     double  ef = m_system->getEquilibrationFraction();
     vector<double> pa = m_system->getWaveFunction()->getParameters();
     double  ti = m_system->getElapsedTime();
+    double  ts = m_system->getSDTime();
     double  ac = (double)m_accepted/(double)m_stepNumber;
 
     outfile << np << ";"
@@ -140,6 +143,7 @@ void Sampler::printOutputToFile() {
             << ef << ";"
             << ac << ";"
             << m_energy << ";"
+            << ts << ";"
             << ti << ";"
             << p << ";";
     for (int i=0; i < p-1; i++) {
