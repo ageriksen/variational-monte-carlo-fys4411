@@ -51,7 +51,7 @@ int main() {
     double alpha_guess          = 0.7;
     int sd_steps                = (int) 1e3;
     int nIterations             = 1000;
-    double eta                  = .0001;
+    double eta                  = .01;
     double alphaChange          = 10;
 
     double gamma = 2.82843;
