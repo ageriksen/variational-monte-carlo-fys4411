@@ -35,7 +35,7 @@ int main() {
 
     int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 10, 50, 100};  //{1,10,100}; 
+    int numberOfParticles[]     = {2, 10, 50, 100};  //{1,10,100}; {2,3,4}; //
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
@@ -48,7 +48,7 @@ int main() {
     // double dt[]                 = {0.001, 0.005, 0.01};
     //for steepest descent
     bool do_steepest_descent    = true;
-    double alpha_guess          = 0.7;
+    double alpha_guess          = 0.75;
     int sd_steps                = (int) 1e3;
     int nIterations             = 1000;
     double eta                  = .001;
@@ -92,7 +92,7 @@ int main() {
     //checks if want to use steepest descent to optimize alpha
     if (do_steepest_descent)
     {    
-        #pragma omp parallel for schedule(dynamic) default(shared) collapse(4)
+        #pragma omp parallel for schedule(dynamic) default(shared) private(alpha_guess, alphaChange) collapse(4)
         for (unsigned int nPar = 0; nPar < sizeof(numberOfParticles)/sizeof(numberOfParticles[0]); nPar++)
         {
             for (unsigned int nDim = 0; nDim < sizeof(numberOfDimensions)/sizeof(numberOfDimensions[0]); nDim++)
@@ -133,7 +133,7 @@ int main() {
                             alphaChange = eta*2*(currDerivativePsiE - currEnergy*currDeltaPsi);
                             alpha_guess -= alphaChange;
 
-                            // cout << "alpha: " << alpha_guess << endl;
+                            // cout << "alpha: " << alphaChange << endl;
 
                             if (abs(alphaChange) < 1e-6 && abs(alpha_guess) < 10)
                             {

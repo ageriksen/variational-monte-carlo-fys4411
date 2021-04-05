@@ -36,8 +36,37 @@ double EllipticalGaussian::evaluate(std::vector<class Particle*> particles) {
         }
     }
 
+    double r;
+    double f = 1;
+    if (m_parameters[4]>0)
+    {
+        for (int i = 0; i < m_system->getNumberOfParticles(); i++)
+        {
+            for (int j = i+1; j < m_system->getNumberOfParticles(); j++)
+            {
+                r = 0;
+                for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+                {
+                    r += std::pow( particles[i]->getPosition()[dim] - particles[j]->getPosition()[dim] , 2);
+                }
+                if (r > m_parameters[4])
+                {
+                    // f = 0; //some large number
+                    // // std::cout << "f=0" << std::endl;
+                    // break;
+                // }
+                // else
+                // {
+                    f *= 1 - ( m_parameters[4] / std::sqrt(r) );
+                }
+                // f *= 1 - ( m_parameters[4] / std::sqrt(r) );
+            }
+        }
+    }
+    
+
 	//return -m_parameters[0]*r2;
-	return std::exp(-m_parameters[0]*r2);
+	return std::exp(-m_parameters[0]*r2) * f;
 }
 
 double EllipticalGaussian::computeDerivative(std::vector<class Particle*> particles) {
@@ -53,7 +82,40 @@ double EllipticalGaussian::computeDerivative(std::vector<class Particle*> partic
         }
     }
 
-	return -.5*r2;
+    double r;
+    double f = 1;
+    if (m_parameters[4]>0)
+    {
+        for (int i = 0; i < m_system->getNumberOfParticles(); i++)
+        {
+            for (int j = i+1; j < m_system->getNumberOfParticles(); j++)
+            {
+                r = 0;
+                for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+                {
+                    r += std::pow( particles[i]->getPosition()[dim] - particles[j]->getPosition()[dim] , 2);
+                }
+                if (r > m_parameters[4])
+                {
+                    // f = 0; //some large number
+                    // // std::cout << "f=0" << std::endl;
+                    // break;
+                // }
+                // else
+                // {
+                    f *= 1 - ( m_parameters[4] / std::sqrt(r) );
+                }
+            }
+        }
+    } 
+    // std::cout << f << std::endl;
+    // if (f!=1)
+    // {
+    //     std::cout << f << std::endl;
+    // }
+    
+
+	return -.5*r2*f;
 }
 
 double EllipticalGaussian::computeDoubleDerivative(std::vector<class Particle*> particles) {
@@ -75,9 +137,6 @@ double EllipticalGaussian::computeDoubleDerivative(std::vector<class Particle*> 
         }
     }
 
-    // since HarmonicOscillator::computeLocalEnergy allready finds r2, we can just reuse
-    // that one. This might have to change in the future though, if we need the double
-    // derivative somewhere else
 	double D = m_system->getNumberOfDimensions();
 	double N = m_system->getNumberOfParticles();
 	return -2*D*N*m_parameters[0] + 4*pow(m_parameters[0], 2)*r2;
@@ -85,6 +144,9 @@ double EllipticalGaussian::computeDoubleDerivative(std::vector<class Particle*> 
 
 
 
+    // since HarmonicOscillator::computeLocalEnergy allready finds r2, we can just reuse
+    // that one. This might have to change in the future though, if we need the double
+    // derivative somewhere else
 
 
 
