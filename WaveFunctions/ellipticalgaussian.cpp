@@ -138,7 +138,7 @@ double EllipticalGaussian::computeDoubleDerivative(std::vector<class Particle*> 
         }
     }
     double res0 =  4*pow(m_parameters[0], 2)*r2;
-    res0 +=  2*m_parameters[0]*N*(m_parameters[2] + 2);
+    res0 -=  2*m_parameters[0]*N*(m_beta[2] + 2);
 
     double a = m_parameters[4];
     double res1 = 0;
