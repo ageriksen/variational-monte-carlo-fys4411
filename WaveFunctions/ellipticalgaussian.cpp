@@ -129,17 +129,77 @@ double EllipticalGaussian::computeDoubleDerivative(std::vector<class Particle*> 
      */
 
 	double r2 = 0;
-	for (int particle = 0; particle < m_system->getNumberOfParticles(); particle++)
+    int N = m_system->getNumberOfParticles();
+	for (int particle = 0; particle < N; particle++)
     {
         for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
         {
             r2 += m_beta[dim] * std::pow(particles[particle]->getPosition()[dim], 2);
         }
     }
+    double res0 =  4*pow(m_parameters[0], 2)*r2;
+    res0 +=  2*m_parameters[0]*N*(m_parameters[2] + 2);
 
-	double D = m_system->getNumberOfDimensions();
-	double N = m_system->getNumberOfParticles();
-	return -2*D*N*m_parameters[0] + 4*pow(m_parameters[0], 2)*r2;
+    double a = m_parameters[4];
+    double res1 = 0;
+    double r_kj;
+    double denm = 0;
+    for (int k = 0; k < N; k++)
+    {
+        //rk_rj = {0.,0.,0.};
+        double rk_rj[3] = {0.,0.,0.};
+        for (int j = 0; j < k; j++)
+        {
+            r_kj = 0;
+            for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+            {
+                r_kj += abs(particles[k]->getPosition()[dim] - particles[j]->getPosition()[dim]);
+                rk_rj[dim] += particles[k]->getPosition()[dim] - particles[j]->getPosition()[dim];
+            }
+            denm += pow(r_kj,3) - pow(r_kj,2) * a;
+        }
+        for (int j = k+1; j < N; j++)
+        {
+            r_kj = 0;
+            for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+            {
+                r_kj += abs(particles[k]->getPosition()[dim] - particles[j]->getPosition()[dim]);
+                rk_rj[dim] += particles[k]->getPosition()[dim] - particles[j]->getPosition()[dim];
+            }
+            denm += pow(r_kj,3) - pow(r_kj,2) * a;
+        }
+        for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+        {
+            res1 += m_beta[dim] * particles[k]->getPosition()[dim] * rk_rj[dim];
+        }
+    }
+    res1 *= 4*m_parameters[0]*a/denm;
+
+    double res2 = 0;
+    for (int k = 0; k < N; k++)
+    {
+        for (int j = 0; j < k; j++)
+        {
+            r_kj = 0;
+            for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+            {
+                r_kj += abs(particles[k]->getPosition()[dim] - particles[j]->getPosition()[dim]);
+            }
+            res2 += pow(r_kj,2) * pow(r_kj - a, 2);
+        }
+        for (int j = k+1; j < N; j++)
+        {
+            r_kj = 0;
+            for( int dim = 0; dim < m_system->getNumberOfDimensions(); dim++ )
+            {
+                r_kj += abs(particles[k]->getPosition()[dim] - particles[j]->getPosition()[dim]);
+            }
+            res2 += pow(r_kj,2) * pow(r_kj - a, 2);
+        }
+    }
+    res2 = pow(a,2) / res2;
+
+	return res0+res1+res2;
 }
 
 

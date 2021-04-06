@@ -35,7 +35,7 @@ int main() {
 
     int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 10, 50, 100};  //{1,10,100}; {2,3,4}; //
+    int numberOfParticles[]     = {2,3,4}; //{2, 10, 50, 100};  //{1,10,100}; 
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
