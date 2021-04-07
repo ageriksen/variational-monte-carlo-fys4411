@@ -35,7 +35,7 @@ int main() {
 
     int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 10, 50, 100};  //{1,10,100}; {2,3,4}; //
+    int numberOfParticles[]     = {10, 50, 100};  //{1,10,100}; {2,3,4}; //
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     double alpha[]              = {.46}; // Variational parameter.
@@ -48,8 +48,8 @@ int main() {
     // double dt[]                 = {0.001, 0.005, 0.01};
     //for steepest descent
     bool do_steepest_descent    = true;
-    double alpha_guess          = 0.75;
-    int sd_steps                = (int) 1e3;
+    double alpha_guess          = 0.71;
+    int sd_steps                = (int) 1e2;
     int nIterations             = 1000;
     double eta                  = .001;
     double alphaChange          = 10;
@@ -133,9 +133,9 @@ int main() {
                             alphaChange = eta*2*(currDerivativePsiE - currEnergy*currDeltaPsi);
                             alpha_guess -= alphaChange;
 
-                            // cout << "alpha: " << alphaChange << endl;
+                            cout << "alpha: " << alphaChange << endl;
 
-                            if (abs(alphaChange) < 1e-6 && abs(alpha_guess) < 10)
+                            if (abs(alphaChange) < 1e-6 && abs(alpha_guess) < 10 && alpha_guess > 0)
                             {
                                 // cout << "iter: " << iter << endl;
                                 iters = iter+1;
