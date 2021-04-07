@@ -50,5 +50,5 @@ mv .\vmc.exe ..
 
 Now the project can be run by executing
 ```bash
-./vmc
+./vmc.exe
 ```
