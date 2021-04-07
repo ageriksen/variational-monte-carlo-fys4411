@@ -1,10 +1,13 @@
 # Simple Variational Monte Carlo solve for FYS4411
 
-Class structure for the first VMC project of FYS4411 (spring 2021). The project involves studying a  trapped,  hard  sphere  Bose  gas using Monte Carlo simulations.
+Class structure for the first VMC project of FYS4411 (spring 2021). The project involves studying a  trapped,  hard  sphere  Bose  gas using Monte Carlo simulations. For furhter detials see the pdf.
 
 
 ## Compiling and running the project
 There are several options you can use for compiling the project. If you use QT Creator, you can import this project into the IDE and point it to the `.pro`-file. If not, you can use CMake to create a Makefile for you which you can then run. You can install CMake through one of the Linux package managers, e.g., `apt install cmake`, `pacman -S cmake`, etc. For Mac you can install using `brew install cmake`. Other ways of installing are shown here: [https://cmake.org/install/](https://cmake.org/install/).
+
+On occasion the program won't run properly. In that case try reruning or recompiling and then reruning the program. There might also be som extra problems runing the program on Linux. Make sure your system is up to date incase you have problems.
+
 
 ### Compiling the project using CMake
 In a Linux/Mac terminal this can be done by the following commands
