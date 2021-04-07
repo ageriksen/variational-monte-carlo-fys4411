@@ -92,7 +92,7 @@ int main() {
     //checks if want to use steepest descent to optimize alpha
     if (do_steepest_descent)
     {    
-        #pragma omp parallel for schedule(dynamic) default(shared) private(alpha_guess, alphaChange) collapse(4)
+        // #pragma omp parallel for schedule(dynamic) default(shared) private(alpha_guess, alphaChange) collapse(4)
         for (unsigned int nPar = 0; nPar < sizeof(numberOfParticles)/sizeof(numberOfParticles[0]); nPar++)
         {
             for (unsigned int nDim = 0; nDim < sizeof(numberOfDimensions)/sizeof(numberOfDimensions[0]); nDim++)

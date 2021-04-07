@@ -97,23 +97,11 @@ double EllipticalGaussian::computeDerivative(std::vector<class Particle*> partic
                 }
                 if (r > m_parameters[4])
                 {
-                    // f = 0; //some large number
-                    // // std::cout << "f=0" << std::endl;
-                    // break;
-                // }
-                // else
-                // {
                     f *= 1 - ( m_parameters[4] / std::sqrt(r) );
                 }
             }
         }
-    } 
-    // std::cout << f << std::endl;
-    // if (f!=1)
-    // {
-    //     std::cout << f << std::endl;
-    // }
-    
+    }     
 
 	return -.5*r2*f;
 }

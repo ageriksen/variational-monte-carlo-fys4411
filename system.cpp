@@ -221,23 +221,39 @@ bool System::findVint(int particle) {
     bool V_int = true;
     double r_ij2 = 0;
 
-    //first we check if V_int is 0 or inf
-    for (int i = particle; i < getNumberOfParticles(); i++)
+	for (int i = 0; i < particle; i++)
     {
-        for (int j = i+1; j < getNumberOfParticles(); j++)
-        {
-            r_ij2 = 0;
-            for( int dim=0; dim < getNumberOfDimensions(); dim++ )
-            {            
-                r_ij2 += std::pow(m_particles[i]->getPosition()[dim] - m_particles[j]->getPosition()[dim], 2);
-            }
-            if (r_ij2 <= m_a)
-            {
-                V_int = false; //some large number
-				// std::cout << "inf" << std::endl;
-                break;
-            }
-        }
+        // for (int j = i+1; j < getNumberOfParticles(); j++)
+        // {
+		r_ij2 = 0;
+		for( int dim=0; dim < getNumberOfDimensions(); dim++ )
+		{            
+			r_ij2 += std::pow(m_particles[i]->getPosition()[dim] - m_particles[particle]->getPosition()[dim], 2);
+		}
+		if (r_ij2 <= m_a)
+		{
+			V_int = false; //some large number
+			// std::cout << "inf" << std::endl;
+			break;
+		}
+        // }
+    }
+    for (int i = particle+1; i < getNumberOfParticles(); i++)
+    {
+        // for (int j = i+1; j < getNumberOfParticles(); j++)
+        // {
+		r_ij2 = 0;
+		for( int dim=0; dim < getNumberOfDimensions(); dim++ )
+		{            
+			r_ij2 += std::pow(m_particles[i]->getPosition()[dim] - m_particles[particle]->getPosition()[dim], 2);
+		}
+		if (r_ij2 <= m_a)
+		{
+			V_int = false; //some large number
+			// std::cout << "inf" << std::endl;
+			break;
+		}
+        // }
     }
 	return V_int;
 }
