@@ -1,0 +1,4 @@
+n Particles;n Dimensions;n Metropolis Steps;Equilibration Fraction;Accepted Steps;Found Energy;Steepest Descent Time;Elapsed Time;n Parameters;Parameters (undefinedNumber)
+2;3;10000;0.1;0.967441;-inf;1.6826;0.301935;5;0.606153;0.001;2.82843;2.82843;0.0043
+10;3;10000;0.1;0.730292;-inf;0.486566;31.2772;5;0.708521;0.001;2.82843;2.82843;0.0043
+50;3;10000;0.1;0.452088;174.191;0.834214;3826.39;5;0.708521;0.001;2.82843;2.82843;0.0043
