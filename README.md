@@ -1,3 +1,6 @@
+# The Report
+is the file "FYS4411___Project_1.pdf"
+
 # Simple Variational Monte Carlo solve for FYS4411
 
 Class structure for the first VMC project of FYS4411 (spring 2021). The project involves studying a  trapped,  hard  sphere  Bose  gas using Monte Carlo simulations. For further detials see the pdf.
