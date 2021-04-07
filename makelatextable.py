@@ -33,7 +33,7 @@ def make_latex_table(filename, columns):
     
     print(output)
 
-#make_latex_table("results/results_1g.csv", [0,1,4,5,6,7,9])
+make_latex_table("results/results_1h.csv", [0,1,4,5,7,9])
 
 def make_plot():
     
