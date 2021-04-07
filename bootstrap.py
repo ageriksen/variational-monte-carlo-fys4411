@@ -101,7 +101,7 @@ def csvError(infile, delim, plot):
 
 #read in data
 infile = open(data_path("energies_1c.csv"), "r")
-error = csvError(infile, ";", False)
+error = csvError(infile, ";", True)
 infile.close()
 SaveError(data_path("error_bootstrap_1c.dat"), error)
 
@@ -109,3 +109,8 @@ infile = open(data_path("energies_1d.csv"), "r")
 error = csvError(infile, ";", False)
 infile.close()
 SaveError(data_path("error_bootstrap_1d.dat"), error)
+"""
+cat results/results_1c.txt:
+    n Particles;n Dimensions;n Metropolis Steps;Equilibration Fraction;Accepted Steps;Found Energy;Elapsed Time;n Parameters;Parameters (undefinedNumber)
+    1;1;10000;0.1;0.73986;0.50353;0.0229235;2;0.46;0.001
+"""
