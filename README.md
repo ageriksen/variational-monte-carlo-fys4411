@@ -1,5 +1,4 @@
-# The Report
-is the file "FYS4411___Project_1.pdf"
+The Report is in the file "FYS4411___Project_1.pdf".
 
 # Simple Variational Monte Carlo solve for FYS4411
 
