@@ -48,7 +48,7 @@ int main() {
     double dt[]                 = {0.001};
     // double dt[]                 = {0.001, 0.005, 0.01};
     //for steepest descent
-    bool do_steepest_descent    = false;
+    bool do_steepest_descent    = true;
     double alpha_guess          = 0.71;
     int sd_steps                = (int) 1e2;
     int nIterations             = 1000;
@@ -57,7 +57,7 @@ int main() {
 
     double gamma = 2.82843;
     double beta = 2.82843;
-    double a = 0.00;
+    double a = 0.0043;
 
     //creares a folder for the results
     #if defined(_WIN32)
