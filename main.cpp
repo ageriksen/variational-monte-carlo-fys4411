@@ -35,11 +35,11 @@ int main() {
 
     int numberOfDimensions[]    = {3};
     // int numberOfParticles[]     = {1,10,100,500}; //{1, 2, 3}; 
-    int numberOfParticles[]     = {2, 10, 50, 100};  //{1,10,100}; {2,3,4}; //
+    int numberOfParticles[]     = {2, 10, 50};  //{1,10,100}; {2,3,4}; //
     int numberOfSteps           = (int) 1e4;
     double omega                = 1.0;              // Oscillator frequency.
     //double alpha[]              = {.46}; // Variational parameter.
-    double alpha[]              = {0.780745, 0.778322, 0.68266, 0.773547, 0.708771}; // Variational parameter.
+    double alpha[]              = {0.780745, 0.710547, 0.801405}; //, 0.773547, 0.708771}; // Variational parameter.
 	// double alpha[] = {0.38, 0.42, 0.46, 0.5, 0.54, 0.58, 0.62};
     double stepLength           = 2;              // Metropolis step length.
     double equilibration        = 0.1;              // Amount of the total steps used
@@ -48,7 +48,7 @@ int main() {
     double dt[]                 = {0.001};
     // double dt[]                 = {0.001, 0.005, 0.01};
     //for steepest descent
-    bool do_steepest_descent    = true;
+    bool do_steepest_descent    = false;
     double alpha_guess          = 0.71;
     int sd_steps                = (int) 1e2;
     int nIterations             = 1000;
@@ -57,7 +57,7 @@ int main() {
 
     double gamma = 2.82843;
     double beta = 2.82843;
-    double a = 0.0043;
+    double a = 0.00;
 
     //creares a folder for the results
     #if defined(_WIN32)
@@ -182,14 +182,16 @@ int main() {
             {
                 for (unsigned int met = 0; met < sizeof(methods)/sizeof(methods[0]); met++)
                 {
-                    for (unsigned int nAlpha = 0; nAlpha < sizeof(alpha)/sizeof(alpha[0]); nAlpha++)
+                    for (unsigned int nAlpha = 0; nAlpha < 1; nAlpha++) //sizeof(alpha)/sizeof(alpha[0])
                     {//for 1h, will use alpha[] same as nPar.
                         for (unsigned int ddt = 0; ddt < sizeof(dt)/sizeof(dt[0]); ddt++)
                         {
                             System* system = new System(seed);
-                            system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
+                            // system->setHamiltonian              (new HarmonicOscillator(system, omega, true));
                             //system->setWaveFunction             (new SimpleGaussian(system, alpha[nAlpha], dt[ddt]));
-                            system->setWaveFunction             (new SimpleGaussian(system, alpha[nPar], dt[ddt]));
+                            // system->setWaveFunction             (new SimpleGaussian(system, alpha[nPar], dt[ddt]));
+                            system->setHamiltonian              (new RepulsiveInteraction(system, omega, gamma, true));
+                            system->setWaveFunction             (new EllipticalGaussian(system, alpha[nPar], beta, dt[ddt]));
                             system->setInitialState             (new RandomUniform(system, numberOfDimensions[nDim], numberOfParticles[nPar]));
                             system->setEquilibrationFraction    (equilibration);
                             system->setStepLength               (stepLength);
